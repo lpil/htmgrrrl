@@ -6,7 +6,9 @@
 Gleam bindings to htmerl, the fast and memory efficient Erlang HTML SAX parser.
 
 ```gleam
-pub fn main_test() {
+import htmgrrrl.{Characters}
+
+pub fn main() {
   let take_text = fn(state, _line, event) {
     case event {
       Characters(text) -> [text, ..state]
@@ -16,7 +18,7 @@ pub fn main_test() {
 
   "<p>Hello, Joe!</p><p>Hello, Mike!</p>"
   |> htmgrrrl.sax([], take_text)
-  |> should.equal(Ok(["Hello, Mike!", "Hello, Joe!"]))
+  // => Ok(["Hello, Mike!", "Hello, Joe!"])
 }
 ```
 
