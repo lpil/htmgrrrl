@@ -3,7 +3,8 @@
 [![Package Version](https://img.shields.io/hexpm/v/htmgrrrl)](https://hex.pm/packages/htmgrrrl)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/htmgrrrl/)
 
-Gleam bindings to htmerl, the fast and memory efficient Erlang HTML SAX parser.
+Gleam bindings to [htmerl](https://github.com/zadean/htmerl), the fast and
+memory efficient Erlang HTML SAX parser.
 
 ```gleam
 import htmgrrrl.{Characters}
