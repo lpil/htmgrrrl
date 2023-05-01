@@ -1,0 +1,16 @@
+name = "htmgrrrl"
+version = "0.1.0"
+description = "Gleam bindings to htmerl, the fast and memory efficient Erlang HTML SAX parser."
+licences = ["Apache-2.0"]
+repository = { type = "github", user = "lpil", repo = "htmgrrrl" }
+links = [
+  { title = "Website", href = "https://gleam.run" },
+  { title = "Sponsor", href = "https://github.com/sponsors/lpil" },
+]
+
+[dependencies]
+gleam_stdlib = "~> 0.28"
+htmerl = "~> 0.1"
+
+[dev-dependencies]
+gleeunit = "~> 0.10"
