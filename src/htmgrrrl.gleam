@@ -121,9 +121,9 @@ pub type Attribute {
 /// and the event itself, and returns the new state. The final state is
 /// returned.
 ///
-pub external fn sax(
-  String,
-  state,
-  fn(state, Int, SaxEvent) -> state,
-) -> Result(state, Nil) =
-  "htmgrrrl_ffi" "sax"
+@external(erlang, "htmgrrrl_ffi", "sax")
+pub fn sax(
+  a: String,
+  b: state,
+  c: fn(state, Int, SaxEvent) -> state,
+) -> Result(state, Nil)
