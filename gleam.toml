@@ -1,6 +1,6 @@
 name = "htmgrrrl"
-version = "0.2.0"
-gleam = ">= 0.30.0"
+version = "0.3.0"
+gleam = ">= 0.32.0"
 
 description = "Gleam bindings to htmerl, the fast and memory efficient Erlang HTML SAX parser."
 licences = ["Apache-2.0"]
