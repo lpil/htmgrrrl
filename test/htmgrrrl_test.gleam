@@ -1,8 +1,8 @@
 import gleeunit
 import gleeunit/should
 import htmgrrrl.{
-  Characters, EndDocument, EndElement, EndPrefixMapping, SaxEvent, StartDocument,
-  StartElement, StartPrefixMapping,
+  type SaxEvent, Characters, EndDocument, EndElement, EndPrefixMapping,
+  StartDocument, StartElement, StartPrefixMapping,
 }
 
 pub fn main() {
@@ -20,28 +20,30 @@ fn accumulate(
 pub fn basic_test() {
   "<h1>Hello, Joe!</h1>"
   |> htmgrrrl.sax([], accumulate)
-  |> should.equal(Ok([
-    #(EndDocument, 1),
-    #(EndPrefixMapping(""), 1),
-    #(EndElement("http://www.w3.org/1999/xhtml", "html", #("", "html")), 1),
-    #(EndElement("http://www.w3.org/1999/xhtml", "body", #("", "body")), 1),
-    #(Characters("Hello, Joe!"), 1),
-    #(
-      StartElement("http://www.w3.org/1999/xhtml", "body", #("", "body"), []),
-      1,
-    ),
-    #(EndElement("http://www.w3.org/1999/xhtml", "head", #("", "head")), 1),
-    #(
-      StartElement("http://www.w3.org/1999/xhtml", "head", #("", "head"), []),
-      1,
-    ),
-    #(
-      StartElement("http://www.w3.org/1999/xhtml", "html", #("", "html"), []),
-      1,
-    ),
-    #(StartPrefixMapping("", "http://www.w3.org/1999/xhtml"), 1),
-    #(StartDocument, 1),
-  ]))
+  |> should.equal(
+    Ok([
+      #(EndDocument, 1),
+      #(EndPrefixMapping(""), 1),
+      #(EndElement("http://www.w3.org/1999/xhtml", "html", #("", "html")), 1),
+      #(EndElement("http://www.w3.org/1999/xhtml", "body", #("", "body")), 1),
+      #(Characters("Hello, Joe!"), 1),
+      #(
+        StartElement("http://www.w3.org/1999/xhtml", "body", #("", "body"), []),
+        1,
+      ),
+      #(EndElement("http://www.w3.org/1999/xhtml", "head", #("", "head")), 1),
+      #(
+        StartElement("http://www.w3.org/1999/xhtml", "head", #("", "head"), []),
+        1,
+      ),
+      #(
+        StartElement("http://www.w3.org/1999/xhtml", "html", #("", "html"), []),
+        1,
+      ),
+      #(StartPrefixMapping("", "http://www.w3.org/1999/xhtml"), 1),
+      #(StartDocument, 1),
+    ]),
+  )
 }
 
 pub fn example_test() {

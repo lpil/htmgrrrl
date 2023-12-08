@@ -17,4 +17,4 @@ gleam_stdlib = "~> 0.28"
 htmerl = "~> 0.1"
 
 [dev-dependencies]
-gleeunit = "~> 0.10"
+gleeunit = "~> 1.0"
