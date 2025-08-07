@@ -1,3 +1,7 @@
+import gleam/list
+import gleam/string
+import houdini
+
 /// SAX events that can be emitted by the parser.
 ///
 /// These are based off of the events found in Erlang's `xmerl_sax_parser`.
@@ -127,3 +131,126 @@ pub fn sax(
   b: state,
   c: fn(state, Int, SaxEvent) -> state,
 ) -> Result(state, Nil)
+
+/// A type that represents a tree of HTML.
+pub type HtmlTree {
+  Element(
+    tag: String,
+    attributes: List(#(String, String)),
+    children: List(HtmlTree),
+  )
+  Text(String)
+}
+
+pub fn html_tree_to_readable_string(html: HtmlTree) -> String {
+  case readable("", html, 0) {
+    "" -> ""
+    out -> out <> "\n"
+  }
+}
+
+fn readable(out: String, html: HtmlTree, level: Int) -> String {
+  let indent = string.repeat("  ", level)
+  case html {
+    Text(text) -> out <> indent <> houdini.escape(text)
+
+    Element(tag: "area" as tag, attributes:, ..)
+    | Element(tag: "base" as tag, attributes:, ..)
+    | Element(tag: "br" as tag, attributes:, ..)
+    | Element(tag: "col" as tag, attributes:, ..)
+    | Element(tag: "embed" as tag, attributes:, ..)
+    | Element(tag: "hr" as tag, attributes:, ..)
+    | Element(tag: "img" as tag, attributes:, ..)
+    | Element(tag: "input" as tag, attributes:, ..)
+    | Element(tag: "link" as tag, attributes:, ..)
+    | Element(tag: "meta" as tag, attributes:, ..)
+    | Element(tag: "source" as tag, attributes:, ..)
+    | Element(tag: "track" as tag, attributes:, ..)
+    | Element(tag: "wbr" as tag, attributes:, ..) -> {
+      let out = out <> indent <> "<" <> tag
+      let out =
+        list.fold(attributes, out, fn(out, attribute) {
+          out <> " " <> attribute.0 <> "=\"" <> attribute.1 <> "\""
+        })
+      out <> ">"
+    }
+
+    Element(tag:, attributes:, children:) -> {
+      let out = out <> indent <> "<" <> tag
+      let out =
+        list.fold(attributes, out, fn(out, attribute) {
+          out <> " " <> attribute.0 <> "=\"" <> attribute.1 <> "\""
+        })
+      let out = out <> ">"
+      let out =
+        list.fold(children, out, fn(out, element) {
+          let out = out <> "\n"
+          readable(out, element, level + 1)
+        })
+      out <> "\n" <> indent <> "</" <> tag <> ">"
+    }
+  }
+}
+
+pub fn parse_to_html_tree(html: String) -> Result(List(HtmlTree), Nil) {
+  sax(html, [], fn(stack, _, event) {
+    echo event
+    case event {
+      StartDocument
+      | EndDocument
+      | StartPrefixMapping(..)
+      | EndPrefixMapping(..)
+      | IgnorableWhitespace(..)
+      | ProcessingInstruction(..)
+      | Comment(..)
+      | StartCdata
+      | EndCdata
+      | StartDtd(..)
+      | EndDtd
+      | ElementDecl(..)
+      | InternalEntityDeclaration(..)
+      | ExternalEntityDeclaration(..)
+      | UnparsedEntityDeclaration(..)
+      | NotationDeclaration(..)
+      | AttributeDeclaration(..) -> stack
+
+      StartElement(local_name:, attributes:, ..) -> {
+        let attributes =
+          list.map(attributes, fn(attr) { #(attr.name, attr.value) })
+        let element = Element(tag: local_name, attributes:, children: [])
+        [element, ..stack]
+      }
+
+      EndElement(..) ->
+        case stack {
+          [
+            Element(tag:, attributes:, children:),
+            Element(tag: p_tag, attributes: p_attributes, children: siblings),
+            ..stack
+          ] -> {
+            let element = Element(tag, attributes, list.reverse(children))
+            let parent = Element(p_tag, p_attributes, [element, ..siblings])
+            [parent, ..stack]
+          }
+
+          [Element(tag:, attributes:, children:), ..stack] -> {
+            let element = Element(tag, attributes, list.reverse(children))
+            [element, ..stack]
+          }
+
+          _ -> panic as "EndElement event without StartElement event"
+        }
+
+      Characters("") -> stack
+
+      Characters(text) ->
+        case stack {
+          [Element(tag:, attributes:, children:), ..stack] -> {
+            let element = Element(tag, attributes, [Text(text), ..children])
+            [element, ..stack]
+          }
+          _ -> panic as "EndElement event without StartElement event"
+        }
+    }
+  })
+}
