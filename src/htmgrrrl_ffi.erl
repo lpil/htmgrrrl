@@ -4,7 +4,6 @@
 
 sax(Html, Initial, Fun) ->
     EventFun = fun(Event, LineNumber, State) ->
-        erlang:display(Event),
         Fun(State, LineNumber, convert_event(Event))
     end,
     case htmerl:sax(Html, [{event_fun, EventFun}, {user_state, Initial}]) of

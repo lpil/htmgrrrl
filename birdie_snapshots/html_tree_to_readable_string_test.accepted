@@ -1,7 +1,7 @@
 ---
 version: 1.3.2
 title: html_tree_to_readable_string_test
-file: ./test/htmgrrrl_test.gleam
+file: ./test/htmlgrrrl/query_test.gleam
 test_name: html_tree_to_readable_string_test
 ---
 <div class="thingy" data-size="big">

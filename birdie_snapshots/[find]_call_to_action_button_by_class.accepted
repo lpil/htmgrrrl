@@ -1,0 +1,17 @@
+---
+version: 1.3.2
+title: [find] Call to action button by class
+file: ./test/htmlgrrrl/query_test.gleam
+test_name: find_element_by_class_test
+---
+
+Query:
+
+  .cta
+
+Match:
+
+  <button class="cta">
+    Get Started
+  </button>
+  

@@ -1,0 +1,17 @@
+---
+version: 1.3.2
+title: [find] Submit button by descendant selector
+file: ./test/htmlgrrrl/query_test.gleam
+test_name: find_descendant_by_attribute_test
+---
+
+Query:
+
+  form button[type="submit"]
+
+Match:
+
+  <button class="primary" type="submit">
+    Sign In
+  </button>
+  
