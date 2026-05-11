@@ -13,7 +13,7 @@ links = [
 
 
 [dependencies]
-gleam_stdlib = "~> 0.28"
+gleam_stdlib = ">= 0.28.0 and < 2.0.0"
 htmerl = "~> 0.1"
 
 [dev-dependencies]
