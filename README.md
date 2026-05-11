@@ -6,29 +6,16 @@
 Gleam bindings to [htmerl](https://github.com/zadean/htmerl), the fast and
 memory efficient Erlang HTML SAX parser.
 
-```gleam
-import htmgrrrl.{Characters}
-
-pub fn main() {
-  let take_text = fn(state, _line, event) {
-    case event {
-      Characters(text) -> [text, ..state]
-      _ -> state
-    }
-  }
-
-  "<p>Hello, Joe!</p><p>Hello, Mike!</p>"
-  |> htmgrrrl.sax([], take_text)
-  // => Ok(["Hello, Mike!", "Hello, Joe!"])
-}
-```
+For querying and scraping HTML you may want to check out the
+[`presentable_soup`](https://hexdocs.pm/presentable_soup/index.html)
+package instead of this low-level one.
 
 ## Installation
 
 This package can be added to your Gleam project:
 
 ```sh
-gleam add htmgrrrl
+gleam add htmgrrrl@1
 ```
 
 and its documentation can be found at <https://hexdocs.pm/htmgrrrl>.
