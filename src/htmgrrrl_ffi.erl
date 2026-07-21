@@ -1,12 +1,12 @@
 -module(htmgrrrl_ffi).
 
--export([sax/3]).
+-export([sax/4]).
 
-sax(Html, Initial, Fun) ->
+sax(Html, Initial, Fun, PreserveWs) ->
     EventFun = fun(Event, LineNumber, State) ->
         Fun(State, LineNumber, convert_event(Event))
     end,
-    case htmerl:sax(Html, [{event_fun, EventFun}, {user_state, Initial}]) of
+    case htmerl:sax(Html, [{event_fun, EventFun}, {user_state, Initial}, {preserve_ws, PreserveWs}]) of
         {ok, State, _Warnings} ->
             {ok, State};
         _ ->

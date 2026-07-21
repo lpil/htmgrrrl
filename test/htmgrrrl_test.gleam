@@ -60,3 +60,19 @@ pub fn example_test() {
   assert htmgrrrl.sax("<p>Hello, Joe!</p><p>Hello, Mike!</p>", [], take_text)
     == Ok(["Hello, Mike!", "Hello, Joe!"])
 }
+
+pub fn example_preserve_ws_test() {
+  let take_text = fn(state, _line, event) {
+    case event {
+      Characters(text) -> [text, ..state]
+      _ -> state
+    }
+  }
+
+  assert htmgrrrl.sax_preserve_ws(
+      "<p>Hello, Joe!</p><p>\nHello, Mike!  </p>",
+      [],
+      take_text,
+    )
+    == Ok(["\nHello, Mike!  ", "Hello, Joe!"])
+}
