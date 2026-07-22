@@ -114,14 +114,6 @@ pub type Attribute {
   Attribute(uri: String, prefix: String, name: String, value: String)
 }
 
-@external(erlang, "htmgrrrl_ffi", "sax")
-pub fn base(
-  a: String,
-  b: state,
-  c: fn(state, Int, SaxEvent) -> state,
-  preserve_ws: Bool,
-) -> Result(state, Nil)
-
 /// Iterate over a stream of SAX events, calling the given function for each
 /// event.
 ///
@@ -129,16 +121,9 @@ pub fn base(
 /// and the event itself, and returns the new state. The final state is
 /// returned.
 ///
-pub fn sax(a: String, b: state, c: fn(state, Int, SaxEvent) -> state) {
-  base(a, b, c, False)
-}
-
-/// A whitespace-preserving version of the `sax` function
-///
-pub fn sax_preserve_ws(
+@external(erlang, "htmgrrrl_ffi", "sax")
+pub fn sax(
   a: String,
   b: state,
   c: fn(state, Int, SaxEvent) -> state,
-) {
-  base(a, b, c, True)
-}
+) -> Result(state, Nil)

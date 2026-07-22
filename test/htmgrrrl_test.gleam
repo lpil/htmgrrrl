@@ -61,7 +61,7 @@ pub fn example_test() {
     == Ok(["Hello, Mike!", "Hello, Joe!"])
 }
 
-pub fn example_preserve_ws_test() {
+pub fn example_with_whitespace_test() {
   let take_text = fn(state, _line, event) {
     case event {
       Characters(text) -> [text, ..state]
@@ -69,7 +69,7 @@ pub fn example_preserve_ws_test() {
     }
   }
 
-  assert htmgrrrl.sax_preserve_ws(
+  assert htmgrrrl.sax(
       "<p>Hello, Joe!</p><p>\nHello, Mike!  </p>",
       [],
       take_text,
