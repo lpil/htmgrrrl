@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.1 - 2026-07-23
+
+- Fixed a bug where whitespace would be lost.
+
 ## v1.0.0 - 2026-05-11
 
 - Update for Gleam stdlib v1.
